@@ -1,0 +1,43 @@
+
+Library Name: Dexter
+
+
+
+Inside Gradle File
+==================
+
+dependencies {
+    implementation 'com.karumi:dexter:4.2.0'
+}
+
+
+
+OnCreate Method 
+================
+
+Dexter.withActivity(this)
+                .withPermissions(
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                .withListener(new MultiplePermissionsListener() {
+                    @Override
+                    public void onPermissionsChecked(MultiplePermissionsReport report) {
+                        // check if all permissions are granted
+                        if (report.areAllPermissionsGranted()) {
+                            // do you work now
+                        }
+ 
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied()) {
+                            // permission is denied permenantly, navigate user to app settings
+                        }
+                    }
+ 
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
+                        token.continuePermissionRequest();
+                    }
+                })
+                .onSameThread()
+                .check();
